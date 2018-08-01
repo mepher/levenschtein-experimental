@@ -33,10 +33,7 @@ def distance(C2ServerList1, C2ServerList2):
     for j in range(len_2):
         d[j*len_1] = j
     # cost the difference between the items in the list.
-	# yah. see that link. 
-	# robie - NOC SOC in vegas. needed to run screaming. 
-	# hobbies - camping backpacking, and reading. 
-	# non fiction. 
+	# yah. see that link.  
     for j in range (1, len_2):
         for i in range (1, len_1):
             if C2List_1[i-1] == C2List_2[j-1]:
