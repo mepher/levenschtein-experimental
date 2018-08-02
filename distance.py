@@ -1,3 +1,5 @@
+https://github.com/JR0driguezB/malware_configs/tree/master/TrickBot
+
 l1=[]
 l2=[]
 
