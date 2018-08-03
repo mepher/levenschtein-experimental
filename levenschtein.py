@@ -46,13 +46,13 @@ def createfilelist(folder=".\\confs\\"):
     for file in os.listdir(folder):
         if file.endswith(".txt"):
             #print ("[+] file: " +(os.path.join(".", file)))
-            fx.append(file)
+            fx.append(folder+file)
     return fx
 
 # create a list of lists (file -> returns list of lists [[ip,port],[ip,port]])
 def buildserverlistfromfile(file):
     serverlist = []
-    f = open(".\\confs\\"+str(file)).readlines()
+    f = open(str(file)).readlines()
     for lines in f:
         ip = None
         port = None
@@ -107,8 +107,11 @@ if __name__=='__main__':
     filelist=createfilelist(args.folder)
     #log ('the file list:')
     #log (filelist)
-    log ('do it!')    
+    log ('do it')    
     # mm is the list of scores (mean me)
+    log ('files in list')
+    for i,f in enumerate(filelist):
+        log ((i,f))
     mm=createmeanmelist(filelist)
     log (( 'the actual mean me list',mm ))
     #log (mm)
@@ -117,8 +120,19 @@ if __name__=='__main__':
     log (( 'Mean Average' ,sum(mm,0.0) / len(mm) ))
     
     if args.newfile:
-        log ('like a fool, you have hard coded the folder path. needs fixing. line 55... and BOOM you need class!')
+        #log ('like a fool, you have hard coded the folder path. needs fixing. line 55... and BOOM you need class!')
         newfilecomparison=comparenewfile(filelist,args.newfile)
-        log (( 'How the new file compares against all the files in list (any low score implies botnet membership)',newfilecomparison ))
-
-    
+        log (( 'How the new file ' +args.newfile+ ', of length '+str(len(buildserverlistfromfile(args.newfile)))+' compares against all the files in list. '))
+        log ('Any occurance of a score below the averge implies botnet membership')
+        log (newfilecomparison)
+        tripped=False
+        for i,f in enumerate(newfilecomparison):
+            if f < sum(mm,0.0) / len(mm):
+                log (('The File '+args.newfile+' has a levenshtein distance of '+str(f)+' to file '+filelist[i]+'from the baseline set' ))
+                tripped=True
+        if tripped==False:
+                log ('The levenshtein distance between the new file and the baseline set never goes below the average')
+            # logic is terrible. 
+            # else:
+            #    log ('The levenshtein distance between the new file and the baseline set never goes below the average')
+        
